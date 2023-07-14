@@ -1,0 +1,14 @@
+@Library('piplineLab') _
+
+pipline {
+    agent any
+
+    stages {
+        stage('Hello world') {
+            steps {
+                echo "Hello"
+                echo gitUtils.getCurrentBranchCli()
+            }
+        }
+    }
+}
