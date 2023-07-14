@@ -4,12 +4,9 @@ import jenkins.model.Jenkins
 def call() {
     def currentJob = getCurrentJob()
 
-    /*currentJob.builds
-        .findAll(this.&filterBuilds)
-        .each { it.doStop() }*/
-
     currentJob.builds
-        .each(this.&getBuildBranch)
+        .findAll(this.&filterBuilds)
+        .each { it.doStop() }
 }
 
 def filterBuilds(def build) {
