@@ -1,11 +1,15 @@
+import hudson.model.TaskListener
 import jenkins.model.Jenkins
 
 def call() {
     def currentJob = getCurrentJob()
 
-    currentJob.builds
+    /*currentJob.builds
         .findAll(this.&filterBuilds)
-        .each { it.doStop() }
+        .each { it.doStop() }*/
+
+    currentJob.builds
+        .each(this.&getBuildBranch)
 }
 
 def filterBuilds(def build) {
@@ -20,10 +24,10 @@ def isSameBranch(def build) {
     return env.BRANCH_NAME.equals(getBuildBranch(build))
 }
 
-def getBuildBranch(def build) {
-    return build.getBuildVariables().get('BRANCH_NAME')
+static def getBuildBranch(def build) {
+    return build.getEnvironment(TaskListener.NULL).get('BRANCH_NAME')
 }
 
 def getCurrentJob() {
-    return Jenkins.instance.getItemByFullName(env.JOB_NAME)
+    return Jenkins.get().getItemByFullName(env.JOB_NAME)
 }
