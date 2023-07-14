@@ -12,6 +12,7 @@ pipeline {
             steps {
                 checkoutCurrentBranch()
                 echo gitUtils.getCurrentBranch()
+                echo env.BRANCH_NAME
             }
         }
     }
