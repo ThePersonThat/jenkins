@@ -3,11 +3,15 @@
 pipeline {
     agent any
 
+    options {
+        skipDefaultCheckout()
+    }
+
     stages {
         stage('Hello world') {
             steps {
                 echo "Hello"
-                echo gitUtils.getCurrentBranchCli()
+                echo gitUtils.getCurrentBranch()
             }
         }
     }
