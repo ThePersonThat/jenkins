@@ -1,6 +1,6 @@
 @Library('pipelineLib') _
 
-pipline {
+pipeline {
     agent any
 
     stages {
