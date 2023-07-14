@@ -18,6 +18,7 @@ pipeline {
             steps {
                 checkoutCurrentBranch()
                 echo gitUtils.getCurrentBranch()
+                sleep sleep(time: 1, unit: 'MINUTES')
             }
         }
     }
