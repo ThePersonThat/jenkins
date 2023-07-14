@@ -8,9 +8,9 @@ pipeline {
     }
 
     stages {
-        stage('Hello world') {
+        stage('Checkout') {
             steps {
-                echo "Hello"
+                checkoutCurrentBranch()
                 echo gitUtils.getCurrentBranch()
             }
         }
