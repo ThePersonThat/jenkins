@@ -4,11 +4,13 @@ def call() {
             branches:               scm.branches,
             userRemoteConfigs:      scm.userRemoteConfigs,
             extensions: [
-                    localBranch(buildBranchName())
+                    localBranch(buildBranchName()),
+                    cleanAfterCheckout(),
+                    [$class: "WipeWorkspace"]
             ]
     ])
 }
 
 def buildBranchName() {
-    return gitUtils.getTriggeredBranch() + getUtils.getCurrentCommitHash()
+    return String.format("%s-%s", gitUtils.getTriggeredBranch(), gitUtils.getCurrentCommitHash())
 }
