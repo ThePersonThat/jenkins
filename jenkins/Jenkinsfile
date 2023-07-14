@@ -17,8 +17,17 @@ pipeline {
         stage('Wipe workspace and checkout') {
             steps {
                 checkoutCurrentBranch()
-                echo gitUtils.getCurrentBranch()
-                sleep sleep(time: 1, unit: 'MINUTES')
+            }
+        }
+
+        stage('Build') {
+            steps {
+                withMaven(
+                        maven: 'maven-3',
+                        options: [jacocoPublisher(disabled: false)]
+                ) {
+                    sh "mvn test"
+                }
             }
         }
     }
