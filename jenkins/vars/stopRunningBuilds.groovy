@@ -21,7 +21,7 @@ def isSameBranch(def build) {
 }
 
 def getBuildBranch(def build) {
-    return build.getBuildVariables.BRANCH_NAME
+    return build.getBuildVariables().get('BRANCH_NAME')
 }
 
 def getCurrentJob() {
