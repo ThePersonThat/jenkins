@@ -20,11 +20,15 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Test and report') {
             steps {
                 withMaven(
                         maven: 'maven-3',
-                        options: [jacocoPublisher(disabled: false)]
+                        options: [
+                                findbugsPublisher(disabled: true),
+                                jgivenPublisher(disabled: true),
+
+                        ]
                 ) {
                     sh "mvn test"
                 }

@@ -16,7 +16,7 @@ class TestServiceTest {
 
     @Test
     void getMainPageName() {
-        assertEquals("main", testService.getMainPageName());
+        assertEquals("123", testService.getMainPageName());
     }
 
     @Test
