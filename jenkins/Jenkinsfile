@@ -20,16 +20,16 @@ pipeline {
             }
         }
 
-        stage('Test and report') {
+        stage('Analyze') {
             steps {
-                withMaven(
-                        maven: 'maven-3',
-                        options: [
-                                findbugsPublisher(disabled: true),
-                                jgivenPublisher(disabled: true),
-                        ]
-                ) {
-                    sh "mvn test"
+                runWithMaven {
+                    withChecks('Analyze checkstyle') {
+                        runCheckstyle()
+                    }
+
+                    withChecks('Run tests') {
+                        sh "mvn clean test"
+                    }
                 }
             }
         }

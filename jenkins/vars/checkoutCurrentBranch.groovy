@@ -5,8 +5,6 @@ def call() {
             userRemoteConfigs:      scm.userRemoteConfigs,
             extensions: [
                     localBranch(),
-                    cleanAfterCheckout(),
-                    gitHubStatusChecks(name: 'Build commit', skipNotifications: true),
                     [$class: "WipeWorkspace"]
             ]
     ])
