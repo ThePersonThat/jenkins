@@ -22,15 +22,25 @@ pipeline {
 
         stage('Analyze') {
             steps {
-                runWithMaven {
-                    withChecks('Analyze checkstyle') {
-                        runCheckstyle()
-                    }
-
-                    withChecks('Run tests') {
-                        sh "mvn clean test"
-                    }
+                withChecks('Analyze checkstyle') {
+                    runCheckstyle()
                 }
+
+                withChecks('Run tests') {
+                    runTests()
+                }
+            }
+
+            post {
+                always {
+                    sh "test 1 != 1"
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Test'
             }
         }
     }

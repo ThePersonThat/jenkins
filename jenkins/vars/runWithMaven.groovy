@@ -4,7 +4,9 @@ def call(Closure body) {
             options: [
                     findbugsPublisher(disabled: true),
                     jgivenPublisher(disabled: true),
-                    mavenLinkerPublisher(disabled: true)
+                    mavenLinkerPublisher(disabled: true),
+                    openTasksPublisher(disabled: true),
+                    junitPublisher(disabled: true)
             ]
     ) {
         body()
