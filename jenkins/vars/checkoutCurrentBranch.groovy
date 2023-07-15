@@ -6,6 +6,7 @@ def call() {
             extensions: [
                     localBranch(),
                     cleanAfterCheckout(),
+                    gitHubStatusChecks(name: 'Build commit', skipNotifications: true),
                     [$class: "WipeWorkspace"]
             ]
     ])

@@ -27,7 +27,6 @@ pipeline {
                         options: [
                                 findbugsPublisher(disabled: true),
                                 jgivenPublisher(disabled: true),
-
                         ]
                 ) {
                     sh "mvn test"
