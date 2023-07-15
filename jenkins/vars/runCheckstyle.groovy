@@ -1,17 +1,27 @@
 def call() {
-    def checkstyleFilename = 'checkstyle-result.xml'
+    runWithMaven {
+        def checkstyleFilename = 'checkstyle-result.xml'
 
-    sh "mvn checkstyle:checkstyle -DcheckstyleFileName=${checkstyleFilename}"
+        sh "mvn checkstyle:checkstyle -DcheckstyleFileName=${checkstyleFilename}"
 
-    recordIssues(
-            aggregatingResults: true,
-            failOnError: false,
-            qualityGates: [
-                    [threshold: 1, type: 'NEW_ERROR']
-            ],
-            tools: [
-                    java(),
-                    checkStyle(pattern: "**/${checkstyleFilename}", reportEncoding: 'UTF-8')
-            ]
-    )
+        recordIssues(
+                aggregatingResults: true,
+                publishAllIssues: true,
+                qualityGates: [getQualityGate()],
+                tools: [
+                        java(),
+                        checkStyle(pattern: "**/${checkstyleFilename}", reportEncoding: 'UTF-8')
+                ]
+        )
+    }
+}
+
+def getQualityGate() {
+    def type = isMasterBranch() ? 'TOTAL' : 'NEW_ERROR'
+
+    return [threshold: 1, type: "${type}"]
+}
+
+def isMasterBranch() {
+    gitUtils.getCurrentBranch().equals('master')
 }
