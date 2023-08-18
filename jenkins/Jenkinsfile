@@ -24,21 +24,23 @@ pipeline {
             steps {
                 withChecks('Analyze checkstyle') {
                     runWithMaven {
-                        def checkstyleFilename = 'checkstyle-result.xml'
+                        script {
+                            def checkstyleFilename = 'checkstyle-result.xml'
 
-                        sh "mvn checkstyle:checkstyle -DcheckstyleFileName=${checkstyleFilename}"
+                            sh "mvn checkstyle:checkstyle -DcheckstyleFileName=${checkstyleFilename}"
 
-                        recordIssues(
-                                aggregatingResults: true,
-                                publishAllIssues: isMasterBranch(),
-                                qualityGates: [getQualityGate()],
-                                ignoreFailedBuilds: false,
-                                ignoreQualityGate: false,
-                                tools: [
-                                        java(),
-                                        checkStyle(pattern: "**/${checkstyleFilename}", reportEncoding: 'UTF-8')
-                                ]
-                        )
+                            recordIssues(
+                                    aggregatingResults: true,
+                                    publishAllIssues: isMasterBranch(),
+                                    qualityGates: [getQualityGate()],
+                                    ignoreFailedBuilds: false,
+                                    ignoreQualityGate: false,
+                                    tools: [
+                                            java(),
+                                            checkStyle(pattern: "**/${checkstyleFilename}", reportEncoding: 'UTF-8')
+                                    ]
+                            )
+                        }
                     }
                 }
 
