@@ -6,9 +6,10 @@ def call() {
 
         recordIssues(
                 aggregatingResults: true,
-                publishAllIssues: true,
-                blameDisabled: false,
+                publishAllIssues: isMasterBranch(),
                 qualityGates: [getQualityGate()],
+                ignoreFailedBuilds: false,
+                ignoreQualityGate: false,
                 tools: [
                         java(),
                         checkStyle(pattern: "**/${checkstyleFilename}", reportEncoding: 'UTF-8')
@@ -18,7 +19,7 @@ def call() {
 }
 
 def getQualityGate() {
-    def type = isMasterBranch() ? 'TOTAL' : 'NEW_ERROR'
+    def type = isMasterBranch() ? 'TOTAL' : 'TOTAL'
 
     return [threshold: 1, type: "${type}"]
 }
