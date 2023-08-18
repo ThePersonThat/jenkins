@@ -65,7 +65,7 @@ pipeline {
 }
 
 def getQualityGate() {
-    def type = isMasterBranch() ? 'TOTAL' : 'TOTAL'
+    def type = isMasterBranch() ? 'TOTAL' : 'NEW_ERROR'
 
     return [threshold: 1, type: "${type}"]
 }
