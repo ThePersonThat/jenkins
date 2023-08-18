@@ -6,7 +6,7 @@ def call() {
 
         recordIssues(
                 aggregatingResults: true,
-                publishAllIssues: false,
+                publishAllIssues: isMasterBranch(),
                 qualityGates: [getQualityGate()],
                 tools: [
                         java(),
@@ -17,7 +17,7 @@ def call() {
 }
 
 def getQualityGate() {
-    def type = isMasterBranch() ? 'TOTAL' : 'NEW_ERROR'
+    def type = isMasterBranch() ? 'TOTAL' : 'TOTAL'
 
     return [threshold: 1, type: "${type}"]
 }
