@@ -8,6 +8,8 @@ def call() {
                 aggregatingResults: true,
                 publishAllIssues: isMasterBranch(),
                 qualityGates: [getQualityGate()],
+                ignoreQualityGate: false,
+                failedNewAll: 1,
                 tools: [
                         java(),
                         checkStyle(pattern: "**/${checkstyleFilename}", reportEncoding: 'UTF-8')
