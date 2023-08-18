@@ -21,19 +21,27 @@ pipeline {
         }
 
         stage('Analyze') {
-            steps {
-                withChecks('Analyze checkstyle') {
-                    runCheckstyle()
+            stages {
+                stage("Tests") {
+                    steps {
+                        withChecks('Run tests') {
+                            runTests()
+                        }
+                    }
+
+                    post {
+                        unstable {
+                            error("Some tests were not passed")
+                        }
+                    }
                 }
 
-                withChecks('Run tests') {
-                    runTests()
-                }
-            }
-
-            post {
-                always {
-                    sh "test 1 != 1"
+                stage("Checkstyle") {
+                    steps {
+                        withChecks('Analyze checkstyle') {
+                            runCheckstyle()
+                        }
+                    }
                 }
             }
         }

@@ -15,3 +15,7 @@ def getCurrentCommitHash() {
 def getTriggeredBranch() {
     return scm.branches[0].name
 }
+
+def isMasterBranch() {
+    return getCurrentBranch().equals('master')
+}
