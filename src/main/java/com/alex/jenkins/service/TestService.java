@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 
 @Service
 public class TestService {
+    private static final int wrongCase = 1;
 
     public String getMainPageName() {
         return "main";
