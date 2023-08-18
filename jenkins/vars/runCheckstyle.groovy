@@ -6,7 +6,7 @@ def call() {
 
         recordIssues(
                 aggregatingResults: true,
-                publishAllIssues: isMasterBranch(),
+                publishAllIssues: false,
                 qualityGates: [getQualityGate()],
                 tools: [
                         java(),
