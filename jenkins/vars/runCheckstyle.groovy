@@ -18,7 +18,7 @@ def call() {
 }
 
 def getQualityGate() {
-    def type = isMasterBranch() ? 'TOTAL' : 'NEW_ERROR'
+    def type = isMasterBranch() ? 'TOTAL' : 'TOTAL'
 
     return [threshold: 1, type: "${type}"]
 }
