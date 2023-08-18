@@ -7,11 +7,11 @@ def getCurrentBranch() {
 
 def getCurrentCommitHash() {
     return sh(
-            script: 'git rev-parse HEAD',
+            script: 'git rev-parse --short HEAD',
             returnStdout: true
     ).trim()
 }
 
-def getTriggeredBranch() {
-    return scm.branches[0].name
+def isMasterBranch() {
+    return getCurrentBranch().equals('master')
 }

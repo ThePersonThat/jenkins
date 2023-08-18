@@ -21,26 +21,76 @@ pipeline {
         }
 
         stage('Analyze') {
-            steps {
-                withChecks('Analyze checkstyle') {
-                    runCheckstyle()
+            stages {
+                stage("Run tests") {
+                    steps {
+                        withChecks('Run tests') {
+                            runTests()
+                        }
+                    }
+
+                    post {
+                        unstable {
+                            error("Some tests were not passed")
+                        }
+                    }
                 }
 
-                withChecks('Run tests') {
-                    runTests()
+                stage("Analyze checkstyle") {
+                    steps {
+                        withChecks('Analyze checkstyle') {
+                            runCheckstyle()
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Package and Push') {
+            stages {
+                stage('Publish build check') {
+                    steps {
+                        publishChecks(
+                                name: 'Build image',
+                                title: 'Building image',
+                                status: 'IN_PROGRESS'
+                        )
+                    }
+                }
+
+                stage('Package') {
+                    steps {
+                        runWithMaven {
+                            sh 'mvn clean package -DskipTests=true'
+                        }
+                    }
+                }
+
+                stage('Build docker image and push') {
+                    steps {
+                        buildAndPublish()
+                    }
                 }
             }
 
             post {
                 always {
-                    sh "test 1 != 1"
-                }
-            }
-        }
+                    script {
+                        def isBuildFailure = currentBuild.result == 'FAILURE'
+                        def stageStatus = isBuildFailure ? 'FAILURE': 'SUCCESS'
+                        def message = isBuildFailure ?
+                                'Failed to build your image' :
+                                "Your image has been build and published: ${dockerUtils.getImageNameAndTag()}"
 
-        stage('Test') {
-            steps {
-                echo 'Test'
+                        publishChecks(
+                                name: 'Build image',
+                                title: 'Building image',
+                                summary: message,
+                                status: 'COMPLETED',
+                                conclusion: stageStatus
+                        )
+                    }
+                }
             }
         }
     }
