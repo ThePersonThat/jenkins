@@ -94,4 +94,10 @@ pipeline {
             }
         }
     }
+
+    stage('Trigger deploy job') {
+        steps {
+            triggerDeploy()
+        }
+    }
 }

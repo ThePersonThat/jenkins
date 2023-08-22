@@ -1,0 +1,55 @@
+@Library('pipelineLib') _
+
+def containerName = 'my-app'
+
+pipeline {
+    agent none
+
+    parameters {
+        string(name: 'imageTag', trim: true, description: 'Image to be deployed')
+    }
+
+    options {
+        disableConcurrentBuilds()
+    }
+
+    stages {
+        stage('Validate') {
+            steps {
+                script {
+                    if (!params.imageTag) {
+                        error('Image tag is not specified')
+                    }
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    input(message: "Deploy '${imageTag}'?", ok: 'Deploy')
+                }
+            }
+        }
+
+        stage('Stop current service') {
+            agent any
+
+            steps {
+                sh "docker stop ${containerName} || true"
+            }
+        }
+
+        stage('Start new service') {
+            agent any
+
+            steps {
+                script {
+                    def image = docker.image(dockerUtils.buildImageName(params.imageTag))
+
+                    image.run("--rm --name ${containerName} -p 8081:8081")
+                }
+            }
+        }
+    }
+}
