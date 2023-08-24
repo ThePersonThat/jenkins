@@ -7,7 +7,7 @@ def getFullImageName() {
 }
 
 def buildImageName(def imageTag) {
-    return "${dockerUtils.getRegistry()}/${dockerUtils.getImageName()}:${imageTag}"
+    return "${getRegistry()}/${getImageName()}:${imageTag}"
 }
 
 def getImageNameAndTag() {
